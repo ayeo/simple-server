@@ -17,6 +17,7 @@ public class Server {
 
     private void checkConnections() throws IOException {
         Socket connection = this.server.accept();
-        this.executor.execute(new RequestHandler(new ResponseRenderer(), connection));
+        RequestHandler handler = RequestHandler.build(connection);
+        this.executor.execute(handler);
     }
 }

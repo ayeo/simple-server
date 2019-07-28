@@ -9,10 +9,14 @@ public class RequestHandler extends FutureTask<String> {
     private PrintWriter printer;
     private Socket connection;
 
-    public RequestHandler(Callable responseRenderer, Socket connection) throws IOException {
+    private RequestHandler(Callable responseRenderer, Socket connection) throws IOException {
         super(responseRenderer);
         this.printer = new PrintWriter(connection.getOutputStream(), true);
         this.connection = connection;
+    }
+
+    public static RequestHandler build(Socket connection) throws IOException {
+        return new RequestHandler(new ResponseRenderer(), connection);
     }
 
     @Override
