@@ -9,9 +9,9 @@ public class RequestHandler extends FutureTask<String> {
     private PrintWriter printer;
     private Socket connection;
 
-    public RequestHandler(Callable responseRenderer, PrintWriter responseOutput, Socket connection) {
+    public RequestHandler(Callable responseRenderer, Socket connection) throws IOException {
         super(responseRenderer);
-        this.printer = responseOutput;
+        this.printer = new PrintWriter(connection.getOutputStream(), true);
         this.connection = connection;
     }
 
@@ -23,8 +23,6 @@ public class RequestHandler extends FutureTask<String> {
             this.printer.println(e);
         } catch (ExecutionException e) {
             this.printer.println(e);
-        } finally {
-            this.printer.flush();
         }
 
         try {
