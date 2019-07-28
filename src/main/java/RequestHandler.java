@@ -18,17 +18,14 @@ public class RequestHandler extends FutureTask<String> {
     @Override
     public void done() {
         try {
-            this.printer.println(get() + "\r\n");
+            this.printer.println(get());
+            this.connection.shutdownOutput();
         } catch (InterruptedException e) {
             this.printer.println(e);
         } catch (ExecutionException e) {
             this.printer.println(e);
-        }
-
-        try {
-            this.connection.shutdownOutput();
         } catch (IOException e) {
-
+            //log me
         }
     }
 }
